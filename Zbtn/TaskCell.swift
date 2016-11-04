@@ -14,6 +14,7 @@ class TaskCell: UITableViewCell {
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var startStopButton: UIButton!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var checkboxButton: UIButton!
     
     
     override func awakeFromNib() {

@@ -51,15 +51,33 @@ class TasksTVC: UITableViewController {
         switch indexPath.section {
         case 0:
             cell.startStopButton.setImage(UIImage(named: "start_button"), for: .normal)
-//            cell.taskTitle.text = "3"
+            cell.startStopButton.isEnabled = true;
+            cell.checkboxButton.setImage(UIImage(named: "checkbox"), for: .normal)
+            cell.checkboxButton.setImage(UIImage(named: "checkbox_filled"), for: .highlighted)
             cell.timeLabel.text = "00:04:45"
             break
         case 1:
-            cell.startStopButton.setImage(UIImage(named: "pause_button"), for: .normal)
+            cell.startStopButton.setImage(UIImage(named: "start_button"), for: .normal)
+            cell.startStopButton.isEnabled = false;
+            cell.checkboxButton.setImage(UIImage(named: "checkbox_filled"), for: .normal)
+            cell.checkboxButton.setImage(UIImage(named: "checkbox"), for: .highlighted)
+            
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskTitle.text!)
+            attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+            
+            cell.taskTitle.attributedText = attributeString;
+            /*
+            let underlineAttribute = [NSStrikethroughColorAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+            let underlineAttributedString = NSAttributedString(string: "StringWithUnderLine", attributes: underlineAttribute)
+            cell.taskTitle.attributedText = underlineAttributedString
+ */
+            
             break
         default:
             break
         }
+        
+        cell.checkboxButton.addTarget(self, action: #selector(changeTaskStatus(sender:)), for: .touchUpInside)
         
         return cell;
     }
@@ -89,6 +107,10 @@ class TasksTVC: UITableViewController {
         }
         
         self.tableView.reloadData()
+    }
+    
+    func changeTaskStatus(sender: UIButton!) {
+        
     }
     
 }

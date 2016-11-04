@@ -27,19 +27,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PM2-tc-kX9">
-                                            <rect key="frame" x="5" y="2" width="365" height="60.5"/>
+                                            <rect key="frame" x="5" y="2" width="365" height="60"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Realm" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYZ-1G-gqj">
-                                                    <rect key="frame" x="8" y="6" width="286" height="48.5"/>
+                                                    <rect key="frame" x="43" y="6" width="251" height="48"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oJk-lz-jSF">
-                                                    <rect key="frame" x="302" y="8" width="55" height="44.5"/>
+                                                    <rect key="frame" x="302" y="8" width="55" height="44"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6EQ-Vk-iH2">
-                                                            <rect key="frame" x="15" y="4.5" width="25" height="25"/>
+                                                            <rect key="frame" x="15" y="4" width="25" height="25"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="25" id="1J8-i2-c0o"/>
                                                                 <constraint firstAttribute="width" constant="25" id="a6H-zT-htP"/>
@@ -47,8 +47,8 @@
                                                             <state key="normal" image="start_button"/>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUG-uv-8rq">
-                                                            <rect key="frame" x="0.0" y="32.5" width="55" height="12"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <rect key="frame" x="0.0" y="32" width="55" height="12"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -65,17 +65,27 @@
                                                         <constraint firstAttribute="width" constant="55" id="sMs-p6-fNc"/>
                                                     </constraints>
                                                 </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZQo-wF-gj3">
+                                                    <rect key="frame" x="10" y="17" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="48k-SA-cLT"/>
+                                                        <constraint firstAttribute="height" constant="25" id="eQZ-lU-ddm"/>
+                                                    </constraints>
+                                                    <state key="normal" backgroundImage="checkbox"/>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="jYZ-1G-gqj" secondAttribute="bottom" constant="6" id="1eh-J5-igU"/>
                                                 <constraint firstItem="oJk-lz-jSF" firstAttribute="leading" secondItem="jYZ-1G-gqj" secondAttribute="trailing" constant="8" id="36y-Af-t72"/>
                                                 <constraint firstItem="oJk-lz-jSF" firstAttribute="centerY" secondItem="PM2-tc-kX9" secondAttribute="centerY" id="58w-Ah-nK7"/>
+                                                <constraint firstItem="ZQo-wF-gj3" firstAttribute="centerY" secondItem="PM2-tc-kX9" secondAttribute="centerY" id="8ff-TX-waq"/>
                                                 <constraint firstAttribute="trailing" secondItem="oJk-lz-jSF" secondAttribute="trailing" constant="8" id="BhA-FW-eGx"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oJk-lz-jSF" secondAttribute="bottom" constant="8" id="LPP-RY-OB6"/>
+                                                <constraint firstItem="ZQo-wF-gj3" firstAttribute="leading" secondItem="PM2-tc-kX9" secondAttribute="leading" constant="10" id="LUH-0b-cWP"/>
+                                                <constraint firstItem="jYZ-1G-gqj" firstAttribute="leading" secondItem="ZQo-wF-gj3" secondAttribute="trailing" constant="8" id="Pcm-GT-2lh"/>
                                                 <constraint firstItem="jYZ-1G-gqj" firstAttribute="top" secondItem="PM2-tc-kX9" secondAttribute="top" constant="6" id="XSM-1V-JQQ"/>
                                                 <constraint firstItem="oJk-lz-jSF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PM2-tc-kX9" secondAttribute="top" constant="8" id="fun-H2-c3I"/>
-                                                <constraint firstItem="jYZ-1G-gqj" firstAttribute="leading" secondItem="PM2-tc-kX9" secondAttribute="leading" constant="8" id="lTZ-qn-Q7j"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -89,6 +99,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="cardView" destination="PM2-tc-kX9" id="aQt-kB-37U"/>
+                                    <outlet property="checkboxButton" destination="ZQo-wF-gj3" id="YMa-oe-g3j"/>
                                     <outlet property="startStopButton" destination="6EQ-Vk-iH2" id="79u-Ro-gBI"/>
                                     <outlet property="taskTitle" destination="jYZ-1G-gqj" id="sc9-oi-wfy"/>
                                     <outlet property="timeLabel" destination="aUG-uv-8rq" id="8Ox-XH-NqW"/>
@@ -156,6 +167,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="checkbox" width="50" height="50"/>
         <image name="start_button" width="50" height="50"/>
     </resources>
 </document>
