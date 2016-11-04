@@ -44,7 +44,7 @@ class TasksTVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell") as! TaskCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskCell
 
         cell.initCardView()
         
@@ -111,6 +111,36 @@ class TasksTVC: UITableViewController {
     
     func changeTaskStatus(sender: UIButton!) {
         
+    }
+    
+    
+    @IBAction func addTask(_ sender: Any) {
+        
+        let alertController = UIAlertController(title: "Добавить новую задачу", message: "Введите название задачи", preferredStyle: .alert)
+        
+        let addAction = UIAlertAction(title: "Добавить", style: .default) { (_) in
+            let textField = alertController.textFields![0] as UITextField
+            print("\(textField.text)")
+        }
+        
+        addAction.isEnabled = false
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Название задачи"
+            
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
+                addAction.isEnabled = textField.text != ""
+            }
+        }
+        
+        alertController.addAction(addAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true) {
+            // ...
+        }
     }
     
 }

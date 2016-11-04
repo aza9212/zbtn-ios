@@ -140,7 +140,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Задачи" id="28E-FU-GFk">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="sEL-gO-jQG"/>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="sEL-gO-jQG">
+                            <connections>
+                                <action selector="addTask:" destination="89X-sa-OuW" id="4v2-fo-e7Q"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Qh-am-k2t" userLabel="First Responder" sceneMemberID="firstResponder"/>
