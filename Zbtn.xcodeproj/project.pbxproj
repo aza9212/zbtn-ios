@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0331C6741DCCFDE500BD7E45 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0331C6731DCCFDE500BD7E45 /* TaskCell.swift */; };
+		0331C6761DCD051C00BD7E45 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0331C6751DCD051C00BD7E45 /* Task.swift */; };
+		0342CAB11DCD141400FF8FEE /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0342CAB01DCD141400FF8FEE /* HeaderView.swift */; };
 		03E1C8A01DCCF0280079B0EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1C89F1DCCF0280079B0EB /* AppDelegate.swift */; };
 		03E1C8A21DCCF0280079B0EB /* TasksTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1C8A11DCCF0280079B0EB /* TasksTVC.swift */; };
 		03E1C8A51DCCF0280079B0EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03E1C8A31DCCF0280079B0EB /* Main.storyboard */; };
@@ -18,6 +20,8 @@
 
 /* Begin PBXFileReference section */
 		0331C6731DCCFDE500BD7E45 /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		0331C6751DCD051C00BD7E45 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		0342CAB01DCD141400FF8FEE /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		03E1C89C1DCCF0280079B0EB /* Zbtn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zbtn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03E1C89F1DCCF0280079B0EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		03E1C8A11DCCF0280079B0EB /* TasksTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTVC.swift; sourceTree = "<group>"; };
@@ -70,6 +74,8 @@
 				03E1C8A81DCCF0280079B0EB /* LaunchScreen.storyboard */,
 				03E1C8AB1DCCF0280079B0EB /* Info.plist */,
 				0331C6731DCCFDE500BD7E45 /* TaskCell.swift */,
+				0331C6751DCD051C00BD7E45 /* Task.swift */,
+				0342CAB01DCD141400FF8FEE /* HeaderView.swift */,
 			);
 			path = Zbtn;
 			sourceTree = "<group>";
@@ -215,6 +221,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0342CAB11DCD141400FF8FEE /* HeaderView.swift in Sources */,
+				0331C6761DCD051C00BD7E45 /* Task.swift in Sources */,
 				03E1C8A21DCCF0280079B0EB /* TasksTVC.swift in Sources */,
 				0331C6741DCCFDE500BD7E45 /* TaskCell.swift in Sources */,
 				03E1C8A01DCCF0280079B0EB /* AppDelegate.swift in Sources */,

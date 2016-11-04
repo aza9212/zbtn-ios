@@ -10,6 +10,7 @@ import UIKit
 
 class TaskCell: UITableViewCell {
 
+    @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var startStopButton: UIButton!
     @IBOutlet weak var timeLabel: UILabel!
@@ -24,6 +25,12 @@ class TaskCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func initCardView(){
+        self.cardView.layer.cornerRadius = 3.0;
+        self.cardView.layer.masksToBounds = true;
+        self.cardView.layer.borderWidth = 0.1;
     }
 
 }
