@@ -29,9 +29,14 @@ class TaskCell: UITableViewCell {
     }
     
     func initCardView(){
+        self.cardView.backgroundColor = UIColor.white
+        
         self.cardView.layer.cornerRadius = 3.0;
         self.cardView.layer.masksToBounds = true;
         self.cardView.layer.borderWidth = 0.1;
+        
+        self.startStopButton.removeTarget(nil, action: nil, for: .allEvents)
+        self.checkboxButton.removeTarget(nil, action: nil, for: .allEvents)
     }
 
 }

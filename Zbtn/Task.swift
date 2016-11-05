@@ -12,7 +12,7 @@ import RealmSwift
 
 
 class Task: Object {
-    dynamic var id = 0
+    dynamic var id = ""
     dynamic var title = ""
     dynamic var status = "stopped"
     

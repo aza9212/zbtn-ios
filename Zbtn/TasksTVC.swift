@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TasksTVC: UITableViewController {
 
+    var activeTasksnotificationToken: NotificationToken? = nil
+    var completedTasksNotificationToken: NotificationToken? = nil
     var completedTasksIsHidden:Bool = true
-    
+    var activeTasks:Results<Task>? = nil
+    var completedTasks:Results<Task>? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,12 +23,29 @@ class TasksTVC: UITableViewController {
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.separatorStyle = .none
-        self.tableView.backgroundView = UIImageView(image: UIImage(named: "tasks_background"))    
+        self.tableView.backgroundView = UIImageView(image: UIImage(named: "tasks_background"))
+        
+        let realm = try! Realm()
+        print("realm path: \(realm.configuration.fileURL?.absoluteString)")
+        
+        let activeTasksPredicate = NSPredicate(format: "status = %@ OR status = %@", "started", "stopped")
+        let completedTasksPredicate = NSPredicate(format: "status = %@", "completed")
+        let startedTasksPredicate = NSPredicate(format: "status = %@", "started")
+        
+        activeTasks = realm.objects(Task.self).filter(activeTasksPredicate)
+        completedTasks = realm.objects(Task.self).filter(completedTasksPredicate)
+        
+        activeTasksnotificationToken = activeTasks?.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+            self?.tableView.reloadData()
+        }
+        
+        completedTasksNotificationToken = completedTasks?.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+            self?.tableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -40,46 +61,59 @@ class TasksTVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 20 : completedTasksIsHidden ? 0 : 10
+        return (section == 0 ? self.activeTasks?.count : completedTasksIsHidden ? 0 : self.completedTasks?.count)!
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskCell
 
         cell.initCardView()
+        cell.checkboxButton.tag = indexPath.row
+        cell.startStopButton.tag = indexPath.row
         
         switch indexPath.section {
         case 0:
-            cell.startStopButton.setImage(UIImage(named: "start_button"), for: .normal)
+            let task = self.activeTasks?[indexPath.row]
+            
+            cell.startStopButton.setImage(UIImage(named: task?.status == "stopped" ? "start_button" : "pause_button"), for: .normal)
             cell.startStopButton.isEnabled = true;
+            cell.startStopButton.addTarget(self, action: #selector(startOrStopTask(sender:)), for: .touchUpInside)
+            
             cell.checkboxButton.setImage(UIImage(named: "checkbox"), for: .normal)
             cell.checkboxButton.setImage(UIImage(named: "checkbox_filled"), for: .highlighted)
-            cell.timeLabel.text = "00:04:45"
+            cell.checkboxButton.addTarget(self, action: #selector(completeTask(sender:)), for: .touchUpInside)
+            
+            if task?.status == "started"{
+            //    cell.cardView.backgroundColor = UIColor.darkGray
+            }
+            
+            cell.taskTitle.text = task?.title
             break
         case 1:
+            let task = self.completedTasks?[indexPath.row]
+            
             cell.startStopButton.setImage(UIImage(named: "start_button"), for: .normal)
             cell.startStopButton.isEnabled = false;
+            
             cell.checkboxButton.setImage(UIImage(named: "checkbox_filled"), for: .normal)
             cell.checkboxButton.setImage(UIImage(named: "checkbox"), for: .highlighted)
+            cell.checkboxButton.addTarget(self, action: #selector(uncompleteTask(sender:)), for: .touchUpInside)
             
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: cell.taskTitle.text!)
-            attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
-            
-            cell.taskTitle.attributedText = attributeString;
-            /*
-            let underlineAttribute = [NSStrikethroughColorAttributeName: NSUnderlineStyle.styleSingle.rawValue]
-            let underlineAttributedString = NSAttributedString(string: "StringWithUnderLine", attributes: underlineAttribute)
-            cell.taskTitle.attributedText = underlineAttributedString
- */
+            cell.taskTitle.attributedText = self.getStrikedString(text: (task?.title)!);
             
             break
         default:
             break
         }
         
-        cell.checkboxButton.addTarget(self, action: #selector(changeTaskStatus(sender:)), for: .touchUpInside)
-        
         return cell;
+    }
+    
+    func getStrikedString(text:String) -> NSAttributedString{
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: text)
+        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+        
+        return attributeString;
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -109,10 +143,40 @@ class TasksTVC: UITableViewController {
         self.tableView.reloadData()
     }
     
-    func changeTaskStatus(sender: UIButton!) {
+    func startOrStopTask(sender: UIButton!) {
+        let task = self.activeTasks?[sender.tag]
+        let realm = try! Realm()
         
+        if let currentStartedTask = realm.objects(Task.self).filter("status == 'started'").first {
+            if currentStartedTask.id != task?.id {
+                try! realm.write {
+                    currentStartedTask.status = "stopped"
+                }
+            }
+        }
+        
+        try! realm.write {
+            task?.status = task?.status == "started" ? "stopped" : "started"
+        }
     }
     
+    func completeTask(sender: UIButton!) {
+        let task = self.activeTasks?[sender.tag]
+        let realm = try! Realm()
+        
+        try! realm.write {
+            task?.status = "completed"
+        }
+    }
+    
+    func uncompleteTask(sender: UIButton!) {
+        let task = self.completedTasks?[sender.tag]
+        let realm = try! Realm()
+        
+        try! realm.write {
+            task?.status = "stopped"
+        }
+    }
     
     @IBAction func addTask(_ sender: Any) {
         
@@ -120,7 +184,7 @@ class TasksTVC: UITableViewController {
         
         let addAction = UIAlertAction(title: "Добавить", style: .default) { (_) in
             let textField = alertController.textFields![0] as UITextField
-            print("\(textField.text)")
+            self.addNewTask(taskTitle: textField.text!)
         }
         
         addAction.isEnabled = false
@@ -142,6 +206,32 @@ class TasksTVC: UITableViewController {
             // ...
         }
     }
+    
+    func addNewTask(taskTitle:String){
+        let task = Task()
+        task.id = NSUUID().uuidString
+        task.title = taskTitle;
+        task.status = "stopped"
+        
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(task)
+        }
+    }
+    
+    deinit {
+        activeTasksnotificationToken?.stop()
+        completedTasksNotificationToken?.stop()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
 }
 
