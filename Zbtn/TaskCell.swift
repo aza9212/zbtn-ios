@@ -15,6 +15,7 @@ class TaskCell: UITableViewCell {
     @IBOutlet weak var startStopButton: UIButton!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var checkboxButton: UIButton!
+    @IBOutlet weak var rightView: UIView!
     
     
     override func awakeFromNib() {
@@ -29,7 +30,8 @@ class TaskCell: UITableViewCell {
     }
     
     func initCardView(){
-        self.cardView.backgroundColor = UIColor.white
+        self.cardView.backgroundColor = UIColor(colorLiteralRed: 237.0/255.0, green: 237.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        self.rightView.backgroundColor = UIColor(colorLiteralRed: 237.0/255.0, green: 237.0/255.0, blue: 237.0/255.0, alpha: 1.0)
         
         self.cardView.layer.cornerRadius = 3.0;
         self.cardView.layer.masksToBounds = true;

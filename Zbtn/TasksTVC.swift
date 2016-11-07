@@ -9,6 +9,12 @@
 import UIKit
 import RealmSwift
 
+struct Status {
+    static let started = "started"
+    static let stopped = "stopped"
+    static let completed = "completed"
+}
+
 class TasksTVC: UITableViewController {
 
     var activeTasksnotificationToken: NotificationToken? = nil
@@ -16,6 +22,7 @@ class TasksTVC: UITableViewController {
     var completedTasksIsHidden:Bool = true
     var activeTasks:Results<Task>? = nil
     var completedTasks:Results<Task>? = nil
+    let startedTasksPredicate = NSPredicate(format: "status = %@", Status.started)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +35,9 @@ class TasksTVC: UITableViewController {
         let realm = try! Realm()
         print("realm path: \(realm.configuration.fileURL?.absoluteString)")
         
-        let activeTasksPredicate = NSPredicate(format: "status = %@ OR status = %@", "started", "stopped")
-        let completedTasksPredicate = NSPredicate(format: "status = %@", "completed")
-        let startedTasksPredicate = NSPredicate(format: "status = %@", "started")
+        let activeTasksPredicate = NSPredicate(format: "status = %@ OR status = %@", Status.started, Status.stopped)
+        let completedTasksPredicate = NSPredicate(format: "status = %@", Status.completed)
+        
         
         activeTasks = realm.objects(Task.self).filter(activeTasksPredicate)
         completedTasks = realm.objects(Task.self).filter(completedTasksPredicate)
@@ -83,8 +90,9 @@ class TasksTVC: UITableViewController {
             cell.checkboxButton.setImage(UIImage(named: "checkbox_filled"), for: .highlighted)
             cell.checkboxButton.addTarget(self, action: #selector(completeTask(sender:)), for: .touchUpInside)
             
-            if task?.status == "started"{
-            //    cell.cardView.backgroundColor = UIColor.darkGray
+            if task?.status == Status.started{
+                cell.cardView.backgroundColor = UIColor.white
+                cell.rightView.backgroundColor = UIColor.white
             }
             
             cell.taskTitle.text = task?.title
@@ -126,10 +134,11 @@ class TasksTVC: UITableViewController {
         headerView.showHideCompletedTasksButton.tag = completedTasksIsHidden ? 0 : 1;
         headerView.initHeaderView()
         headerView.showHideCompletedTasksButton.addTarget(self, action: #selector(showOrHideCompletedTasks(sender:)), for: .touchUpInside)
-        
+        headerView.tag = -5;
         
         return headerView
     }
+    
     
     func showOrHideCompletedTasks(sender: UIButton!) {
         if sender.tag == 0 {
@@ -147,16 +156,16 @@ class TasksTVC: UITableViewController {
         let task = self.activeTasks?[sender.tag]
         let realm = try! Realm()
         
-        if let currentStartedTask = realm.objects(Task.self).filter("status == 'started'").first {
+        if let currentStartedTask = realm.objects(Task.self).filter(self.startedTasksPredicate).first {
             if currentStartedTask.id != task?.id {
                 try! realm.write {
-                    currentStartedTask.status = "stopped"
+                    currentStartedTask.status = Status.stopped
                 }
             }
         }
         
         try! realm.write {
-            task?.status = task?.status == "started" ? "stopped" : "started"
+            task?.status = task?.status == Status.started ? Status.stopped : Status.started
         }
     }
     
@@ -165,7 +174,7 @@ class TasksTVC: UITableViewController {
         let realm = try! Realm()
         
         try! realm.write {
-            task?.status = "completed"
+            task?.status = Status.completed
         }
     }
     
@@ -174,7 +183,7 @@ class TasksTVC: UITableViewController {
         let realm = try! Realm()
         
         try! realm.write {
-            task?.status = "stopped"
+            task?.status = Status.stopped
         }
     }
     
@@ -211,7 +220,7 @@ class TasksTVC: UITableViewController {
         let task = Task()
         task.id = NSUUID().uuidString
         task.title = taskTitle;
-        task.status = "stopped"
+        task.status = Status.stopped
         
         let realm = try! Realm()
         

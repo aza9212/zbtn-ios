@@ -20,10 +20,10 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="65" id="Wtx-hf-cey" customClass="TaskCell" customModule="Zbtn" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="375" height="65"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wtx-hf-cey" id="r2p-gP-kuu">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PM2-tc-kX9">
@@ -74,7 +74,7 @@
                                                     <state key="normal" backgroundImage="checkbox"/>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" red="0.9281329314720812" green="0.9281329314720812" blue="0.9281329314720812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="jYZ-1G-gqj" secondAttribute="bottom" constant="6" id="1eh-J5-igU"/>
                                                 <constraint firstItem="oJk-lz-jSF" firstAttribute="leading" secondItem="jYZ-1G-gqj" secondAttribute="trailing" constant="8" id="36y-Af-t72"/>
@@ -100,16 +100,17 @@
                                 <connections>
                                     <outlet property="cardView" destination="PM2-tc-kX9" id="aQt-kB-37U"/>
                                     <outlet property="checkboxButton" destination="ZQo-wF-gj3" id="YMa-oe-g3j"/>
+                                    <outlet property="rightView" destination="oJk-lz-jSF" id="KnZ-hG-Rgp"/>
                                     <outlet property="startStopButton" destination="6EQ-Vk-iH2" id="79u-Ro-gBI"/>
                                     <outlet property="taskTitle" destination="jYZ-1G-gqj" id="sc9-oi-wfy"/>
                                     <outlet property="timeLabel" destination="aUG-uv-8rq" id="8Ox-XH-NqW"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="headerCell" rowHeight="50" id="udV-fT-nb0" customClass="HeaderView" customModule="Zbtn" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="121" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="120.5" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="udV-fT-nb0" id="GuS-2x-pp3">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bjf-6e-ESf">
