@@ -30,6 +30,7 @@ class TaskCell: UITableViewCell {
     }
     
     func initCardView(){
+        self.cardView.alpha = 0.6
         self.cardView.backgroundColor = UIColor(colorLiteralRed: 237.0/255.0, green: 237.0/255.0, blue: 237.0/255.0, alpha: 1.0)
         self.rightView.backgroundColor = UIColor(colorLiteralRed: 237.0/255.0, green: 237.0/255.0, blue: 237.0/255.0, alpha: 1.0)
         

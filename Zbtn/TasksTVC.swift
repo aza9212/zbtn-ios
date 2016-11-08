@@ -24,6 +24,8 @@ class TasksTVC: UITableViewController {
     var completedTasks:Results<Task>? = nil
     let startedTasksPredicate = NSPredicate(format: "status = %@", Status.started)
     
+    var timer:Timer?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +51,20 @@ class TasksTVC: UITableViewController {
         
         completedTasksNotificationToken = completedTasks?.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
             self?.tableView.reloadData()
+        }
+        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.timerTick), userInfo: nil, repeats: true)
+    }
+    
+    func timerTick(){
+        let realm = try! Realm()
+        
+        if let currentStartedTask = realm.objects(Task.self).filter(self.startedTasksPredicate).first {
+            if let index = self.activeTasks?.index(of: currentStartedTask){
+                if let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+                    (cell as! TaskCell).timeLabel.text = currentStartedTask.getTotalTimeString()
+                }
+            }
         }
     }
 
@@ -94,9 +110,11 @@ class TasksTVC: UITableViewController {
             if task?.status == Status.started{
                 cell.cardView.backgroundColor = UIColor.white
                 cell.rightView.backgroundColor = UIColor.white
+                cell.cardView.alpha = 1.0
             }
             
             cell.taskTitle.text = task?.title
+            cell.timeLabel.text = task?.getTotalTimeString()
             break
         case 1:
             let task = self.completedTasks?[indexPath.row]
@@ -109,11 +127,13 @@ class TasksTVC: UITableViewController {
             cell.checkboxButton.addTarget(self, action: #selector(uncompleteTask(sender:)), for: .touchUpInside)
             
             cell.taskTitle.attributedText = self.getStrikedString(text: (task?.title)!);
+            cell.timeLabel.text = task?.getTotalTimeString()
             
             break
         default:
             break
         }
+        
         
         return cell;
     }
@@ -198,6 +218,8 @@ class TasksTVC: UITableViewController {
     func completeTask(sender: UIButton!) {
         let task = self.activeTasks?[sender.tag]
         let realm = try! Realm()
+        
+        self.stopSession(task: task!)
         
         try! realm.write {
             task?.status = Status.completed

@@ -19,4 +19,22 @@ class Task: Object {
     override static func primaryKey() -> String? {
         return "id"
     }
+    
+    func getTotalTimeString() -> String{
+        let realm = try! Realm()
+        
+        let currentTaskSessionsPredicate = NSPredicate(format: "taskId = %@", self.id)
+        
+        var totalTimeInterval = 0.0
+        for session in realm.objects(Session.self).filter(currentTaskSessionsPredicate) {
+            totalTimeInterval += session.stopTime != nil ? (session.stopTime?.timeIntervalSince(session.startTime))! : Date().timeIntervalSince(session.startTime)
+        }
+        
+        let interval = Int(totalTimeInterval)
+        let seconds = interval % 60
+        let minutes = (interval / 60) % 60
+        let hours = (interval / 3600) % 60
+        
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
 }
