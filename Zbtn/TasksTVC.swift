@@ -24,6 +24,7 @@ class TasksTVC: UITableViewController {
     var completedTasks:Results<Task>? = nil
     let startedTasksPredicate = NSPredicate(format: "status = %@", Status.started)
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -157,15 +158,40 @@ class TasksTVC: UITableViewController {
         let realm = try! Realm()
         
         if let currentStartedTask = realm.objects(Task.self).filter(self.startedTasksPredicate).first {
-            if currentStartedTask.id != task?.id {
-                try! realm.write {
-                    currentStartedTask.status = Status.stopped
-                }
+            if currentStartedTask.id != task?.id{
+                self.stopSession(task: currentStartedTask)
+            }
+        }
+        
+        task?.status == Status.started ? self.stopSession(task: task!) : self.startSession(task: task!)
+    }
+    
+    func startSession(task:Task){
+        let session = Session()
+        session.id = NSUUID().uuidString
+        session.taskId = task.id;
+        session.startTime = Date()
+        
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(session, update: true)
+            task.status = Status.started
+        }
+    }
+    
+    func stopSession(task:Task){
+        let realm = try! Realm()
+        let currentSessionPredicate = NSPredicate(format: "stopTime = nil AND taskId = %@",task.id)
+        
+        if let currentSession = realm.objects(Session.self).filter(currentSessionPredicate).first {
+            try! realm.write {
+                currentSession.stopTime = Date()
             }
         }
         
         try! realm.write {
-            task?.status = task?.status == Status.started ? Status.stopped : Status.started
+            task.status = Status.stopped
         }
     }
     
@@ -225,7 +251,7 @@ class TasksTVC: UITableViewController {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(task)
+            realm.add(task, update: true)
         }
     }
     

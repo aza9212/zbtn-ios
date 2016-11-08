@@ -13,7 +13,7 @@ class Session: Object {
     dynamic var id = ""
     dynamic var taskId = ""
     dynamic var startTime = Date()
-    dynamic var stopTime = Date()
+    dynamic var stopTime :Date? = nil
     
     override static func primaryKey() -> String? {
         return "id"
