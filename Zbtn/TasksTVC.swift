@@ -188,7 +188,7 @@ class TasksTVC: UITableViewController {
                     textField.text = task.title
                     
                     NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
-                        addAction.isEnabled = textField.text != task.title && textField.text != ""
+                        addAction.isEnabled = !self.checkTaskExist(taskTitle: textField.text!) && textField.text != ""
                     }
                 }
                 
@@ -311,7 +311,7 @@ class TasksTVC: UITableViewController {
             textField.placeholder = "Название задачи"
             
             NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
-                addAction.isEnabled = textField.text != ""
+                addAction.isEnabled = textField.text != "" && !self.checkTaskExist(taskTitle: textField.text!)
             }
         }
         
@@ -321,6 +321,13 @@ class TasksTVC: UITableViewController {
         self.present(alertController, animated: true) {
             // ...
         }
+    }
+    
+    func checkTaskExist(taskTitle:String) -> Bool{
+        let realm = try! Realm()
+        let predicate = NSPredicate(format: "title = %@",taskTitle)
+        
+        return realm.objects(Task.self).filter(predicate).count > 0
     }
     
     func addNewTask(taskTitle:String){
