@@ -160,6 +160,65 @@ class TasksTVC: UITableViewController {
         return headerView
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let task = indexPath.section == 0 ? self.activeTasks?[indexPath.row] : self.completedTasks?[indexPath.row] {
+            let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            optionMenu.addAction(UIAlertAction(title: "Изменить", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+                let alertController = UIAlertController(title: "Изменить задачу \(task.title)", message: "Введите новое название задачи", preferredStyle: .alert)
+                
+                let addAction = UIAlertAction(title: "Изменить", style: .default) { (_) in
+                    let textField = alertController.textFields![0] as UITextField
+                    
+                    let realm = try! Realm()
+                    
+                    try! realm.write {
+                        task.title = textField.text!
+                    }
+                }
+                
+                addAction.isEnabled = false
+                
+                let cancelAction = UIAlertAction(title: "Отмена", style: .cancel) { (_) in }
+                
+                alertController.addTextField { (textField) in
+                    textField.placeholder = "Новое название задачи"
+                    textField.text = task.title
+                    
+                    NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
+                        addAction.isEnabled = textField.text != task.title && textField.text != ""
+                    }
+                }
+                
+                alertController.addAction(addAction)
+                alertController.addAction(cancelAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+            }))
+            
+            optionMenu.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                let realm = try! Realm()
+                
+                try! realm.write {
+                    realm.delete(task)
+                }
+            }))
+            
+            optionMenu.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+            }))
+            
+            
+            self.present(optionMenu, animated: true, completion: nil)
+        }
+    }
+    
     
     func showOrHideCompletedTasks(sender: UIButton!) {
         if sender.tag == 0 {
